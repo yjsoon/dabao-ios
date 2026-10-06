@@ -26,9 +26,15 @@ final class RestaurantCell: UITableViewCell {
         photoView.layer.cornerRadius = 12
         photoView.clipsToBounds = true
 
-        nameLabel.font = .systemFont(ofSize: 17, weight: .semibold)
-        detailLabel.font = .systemFont(ofSize: 13)
-        detailLabel.textColor = .lightGray
+        // Fix: use text styles so the fonts follow the user's text size (Dynamic Type).
+        nameLabel.font = .preferredFont(forTextStyle: .headline)
+        nameLabel.adjustsFontForContentSizeCategory = true
+        nameLabel.numberOfLines = 0
+        detailLabel.font = .preferredFont(forTextStyle: .footnote)
+        detailLabel.adjustsFontForContentSizeCategory = true
+        detailLabel.numberOfLines = 0
+        // Fix: .lightGray on white is too low contrast. .secondaryLabel adapts to dark mode too.
+        detailLabel.textColor = .secondaryLabel
 
         starsStack.axis = .horizontal
         starsStack.spacing = 2
@@ -48,11 +54,13 @@ final class RestaurantCell: UITableViewCell {
         NSLayoutConstraint.activate([
             photoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             photoView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            photoView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 12),
             photoView.widthAnchor.constraint(equalToConstant: 64),
             photoView.heightAnchor.constraint(equalToConstant: 64),
 
             textStack.leadingAnchor.constraint(equalTo: photoView.trailingAnchor, constant: 12),
-            textStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            textStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            textStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
             textStack.trailingAnchor.constraint(lessThanOrEqualTo: statusDot.leadingAnchor, constant: -8),
 
             statusDot.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
@@ -76,5 +84,22 @@ final class RestaurantCell: UITableViewCell {
         }
 
         statusDot.backgroundColor = restaurant.isOpen ? .systemGreen : .systemRed
+        // Fix: don't rely on colour alone. Say "Closed" in words as well.
+        if !restaurant.isOpen {
+            detailLabel.text = "Closed now · " + (detailLabel.text ?? "")
+        }
+
+        // Fix: read the whole cell as one item, with the stars and the open/closed dot
+        // described in words (they were images and colour only).
+        isAccessibilityElement = true
+        accessibilityLabel = [
+            restaurant.name,
+            restaurant.cuisine,
+            String(format: "Rated %.1f out of 5", restaurant.rating),
+            "\(restaurant.deliveryMinutes) minutes",
+            "\(PriceFormatter.string(from: restaurant.deliveryFee)) delivery",
+            restaurant.isOpen ? "Open" : "Closed"
+        ].joined(separator: ", ")
+        accessibilityTraits = .button
     }
 }

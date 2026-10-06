@@ -14,6 +14,7 @@ final class MenuItemCell: UITableViewCell {
     private let quantityLabel = UILabel()
     private let addButton = UIButton(type: .system)
     private let removeButton = UIButton(type: .system)
+    private let nameRow = UIStackView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -31,8 +32,11 @@ final class MenuItemCell: UITableViewCell {
     }
 
     private func setUpViews() {
-        nameLabel.font = .systemFont(ofSize: 16, weight: .semibold)
-        detailLabel.font = .systemFont(ofSize: 12)
+        // Fix: Dynamic Type.
+        nameLabel.font = .preferredFont(forTextStyle: .headline)
+        detailLabel.font = .preferredFont(forTextStyle: .caption1)
+        [nameLabel, detailLabel].forEach { $0.adjustsFontForContentSizeCategory = true }
+        nameLabel.numberOfLines = 0
         detailLabel.textColor = .secondaryLabel
         detailLabel.numberOfLines = 2
         priceLabel.font = .systemFont(ofSize: 14, weight: .medium)
@@ -46,10 +50,14 @@ final class MenuItemCell: UITableViewCell {
         addButton.addAction(UIAction { [weak self] _ in self?.onAdd?() }, for: .touchUpInside)
         removeButton.addAction(UIAction { [weak self] _ in self?.onRemove?() }, for: .touchUpInside)
 
-        let nameRow = UIStackView(arrangedSubviews: [nameLabel, spicyIcon])
+        nameRow.addArrangedSubview(nameLabel)
+        nameRow.addArrangedSubview(spicyIcon)
+        nameRow.isAccessibilityElement = true
         nameRow.spacing = 4
         nameRow.alignment = .center
 
+        // The price is read out as part of nameRow, so hide the separate label from VoiceOver.
+        priceLabel.isAccessibilityElement = false
         let textStack = UIStackView(arrangedSubviews: [nameRow, detailLabel, priceLabel])
         textStack.axis = .vertical
         textStack.spacing = 4
@@ -75,10 +83,11 @@ final class MenuItemCell: UITableViewCell {
 
             spicyIcon.widthAnchor.constraint(equalToConstant: 14),
             spicyIcon.heightAnchor.constraint(equalToConstant: 14),
-            addButton.widthAnchor.constraint(equalToConstant: 28),
-            addButton.heightAnchor.constraint(equalToConstant: 28),
-            removeButton.widthAnchor.constraint(equalToConstant: 28),
-            removeButton.heightAnchor.constraint(equalToConstant: 28)
+            // Fix: Apple recommends tap targets of at least 44 x 44 points.
+            addButton.widthAnchor.constraint(equalToConstant: 44),
+            addButton.heightAnchor.constraint(equalToConstant: 44),
+            removeButton.widthAnchor.constraint(equalToConstant: 44),
+            removeButton.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
 
@@ -94,5 +103,16 @@ final class MenuItemCell: UITableViewCell {
         // Sold-out dishes are greyed out.
         contentView.alpha = row.isSoldOut ? 0.4 : 1.0
         addButton.isEnabled = !row.isSoldOut
+
+        // Fix: the + and - buttons were icons with no names, and "sold out" and "spicy"
+        // were only shown with colour and an icon.
+        addButton.accessibilityLabel = "Add \(row.name)"
+        removeButton.accessibilityLabel = "Remove one \(row.name)"
+        var description = [row.name, row.priceText]
+        if row.isSpicy { description.append("Spicy") }
+        if row.isSoldOut { description.append("Sold out") }
+        if let quantity = row.quantityText { description.append("In cart: \(quantity.dropFirst())") }
+        nameRow.accessibilityLabel = description.joined(separator: ", ")
+        detailLabel.accessibilityLabel = row.detail
     }
 }

@@ -37,7 +37,9 @@ final class RestaurantListViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(RestaurantCell.self, forCellReuseIdentifier: RestaurantCell.reuseIdentifier)
-        tableView.rowHeight = 88
+        // Fix: let rows grow when the text gets bigger.
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 88
         view.addSubview(tableView)
 
         NSLayoutConstraint.activate([
