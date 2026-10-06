@@ -71,6 +71,9 @@ final class CartStore {
 
     func removeLine(at index: Int) {
         lines.remove(at: index)
+        if lines.isEmpty {
+            restaurant = nil
+        }
         notifyChange()
     }
 
