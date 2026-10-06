@@ -1,0 +1,305 @@
+[
+  {
+    "id": "r1",
+    "name": "Ah Seng Chicken Rice",
+    "cuisine": "Hawker",
+    "rating": 4.6,
+    "deliveryMinutes": 25,
+    "deliveryFee": 2.99,
+    "isOpen": true,
+    "imageName": "fork.knife",
+    "menu": [
+      {
+        "id": "r1m1",
+        "name": "Steamed Chicken Rice",
+        "description": "Tender poached chicken with fragrant rice and chilli.",
+        "price": 4.5,
+        "category": "Mains",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r1m2",
+        "name": "Roasted Chicken Rice",
+        "description": "Crispy-skinned roast chicken with fragrant rice.",
+        "price": 4.8,
+        "category": "Mains",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r1m3",
+        "name": "Chicken Rice Set for 2",
+        "description": "Half a chicken, two rice, soup and greens.",
+        "price": 15.0,
+        "category": "Mains",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r1m4",
+        "name": "Oyster Sauce Kailan",
+        "description": "Blanched kailan with oyster sauce.",
+        "price": 4.0,
+        "category": "Sides",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r1m5",
+        "name": "Braised Egg",
+        "description": "Soy-braised egg.",
+        "price": 1.2,
+        "category": "Sides",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r1m6",
+        "name": "Chilli Sauce (extra)",
+        "description": "Our house chilli. Very garlicky.",
+        "price": 0.5,
+        "category": "Sides",
+        "isSoldOut": false,
+        "isSpicy": true
+      },
+      {
+        "id": "r1m7",
+        "name": "Barley Water",
+        "description": "Homemade, lightly sweetened.",
+        "price": 1.8,
+        "category": "Drinks",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r1m8",
+        "name": "Lime Juice",
+        "description": "Freshly squeezed.",
+        "price": 2.2,
+        "category": "Drinks",
+        "isSoldOut": true,
+        "isSpicy": false
+      }
+    ]
+  },
+  {
+    "id": "r2",
+    "name": "Mala Mama",
+    "cuisine": "Sichuan",
+    "rating": 4.3,
+    "deliveryMinutes": 35,
+    "deliveryFee": 3.49,
+    "isOpen": true,
+    "imageName": "flame.fill",
+    "menu": [
+      {
+        "id": "r2m1",
+        "name": "Mala Xiang Guo (Small)",
+        "description": "Pick-your-own stir-fry, small bowl.",
+        "price": 12.9,
+        "category": "Mains",
+        "isSoldOut": false,
+        "isSpicy": true
+      },
+      {
+        "id": "r2m2",
+        "name": "Mala Xiang Guo (Large)",
+        "description": "Pick-your-own stir-fry, large bowl.",
+        "price": 18.9,
+        "category": "Mains",
+        "isSoldOut": false,
+        "isSpicy": true
+      },
+      {
+        "id": "r2m3",
+        "name": "Dan Dan Noodles",
+        "description": "Noodles in a nutty, spicy sauce.",
+        "price": 8.5,
+        "category": "Mains",
+        "isSoldOut": false,
+        "isSpicy": true
+      },
+      {
+        "id": "r2m4",
+        "name": "Smashed Cucumber",
+        "description": "Cold cucumber with garlic and vinegar.",
+        "price": 4.5,
+        "category": "Sides",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r2m5",
+        "name": "Steamed Rice",
+        "description": "",
+        "price": 1.0,
+        "category": "Sides",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r2m6",
+        "name": "Chrysanthemum Tea",
+        "description": "Good for putting out the fire.",
+        "price": 2.0,
+        "category": "Drinks",
+        "isSoldOut": false,
+        "isSpicy": false
+      }
+    ]
+  },
+  {
+    "id": "r3",
+    "name": "Kopi Corner",
+    "cuisine": "Coffee shop",
+    "rating": 4.8,
+    "deliveryMinutes": 15,
+    "deliveryFee": 1.99,
+    "isOpen": true,
+    "imageName": "cup.and.saucer.fill",
+    "menu": [
+      {
+        "id": "r3m1",
+        "name": "Kaya Toast Set",
+        "description": "Kaya toast, two soft-boiled eggs and a kopi.",
+        "price": 5.6,
+        "category": "Breakfast",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r3m2",
+        "name": "Mee Siam",
+        "description": "Tangy vermicelli with egg and tau pok.",
+        "price": 5.0,
+        "category": "Breakfast",
+        "isSoldOut": false,
+        "isSpicy": true
+      },
+      {
+        "id": "r3m3",
+        "name": "Kopi",
+        "description": "Coffee with condensed milk.",
+        "price": 1.6,
+        "category": "Drinks",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r3m4",
+        "name": "Kopi O Kosong",
+        "description": "Black coffee, no sugar.",
+        "price": 1.4,
+        "category": "Drinks",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r3m5",
+        "name": "Teh Peng",
+        "description": "Iced milk tea.",
+        "price": 2.0,
+        "category": "Drinks",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r3m6",
+        "name": "Milo Dinosaur",
+        "description": "Iced Milo with a mountain of Milo powder.",
+        "price": 3.5,
+        "category": "Drinks",
+        "isSoldOut": false,
+        "isSpicy": false
+      }
+    ]
+  },
+  {
+    "id": "r4",
+    "name": "Green Bowl",
+    "cuisine": "Salads",
+    "rating": 4.1,
+    "deliveryMinutes": 30,
+    "deliveryFee": 3.99,
+    "isOpen": false,
+    "imageName": "leaf.fill",
+    "menu": [
+      {
+        "id": "r4m1",
+        "name": "Build Your Own Bowl",
+        "description": "Base, protein and three toppings.",
+        "price": 13.5,
+        "category": "Bowls",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r4m2",
+        "name": "Sesame Tofu Bowl",
+        "description": "Brown rice, tofu, edamame and greens.",
+        "price": 12.0,
+        "category": "Bowls",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r4m3",
+        "name": "Cold-pressed Juice",
+        "description": "Apple, carrot and ginger.",
+        "price": 6.5,
+        "category": "Drinks",
+        "isSoldOut": false,
+        "isSpicy": false
+      }
+    ]
+  },
+  {
+    "id": "r5",
+    "name": "Ondeh Ondeh Bakery",
+    "cuisine": "Desserts",
+    "rating": 4.7,
+    "deliveryMinutes": 40,
+    "deliveryFee": 2.49,
+    "isOpen": true,
+    "imageName": "birthday.cake.fill",
+    "menu": [
+      {
+        "id": "r5m1",
+        "name": "Ondeh Ondeh (6 pcs)",
+        "description": "Pandan balls with gula melaka.",
+        "price": 4.8,
+        "category": "Kueh",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r5m2",
+        "name": "Kueh Lapis",
+        "description": "Layered spice cake slice.",
+        "price": 3.2,
+        "category": "Kueh",
+        "isSoldOut": false,
+        "isSpicy": false
+      },
+      {
+        "id": "r5m3",
+        "name": "Pandan Chiffon (whole)",
+        "description": "Light and fluffy.",
+        "price": 18.0,
+        "category": "Cakes",
+        "isSoldOut": true,
+        "isSpicy": false
+      },
+      {
+        "id": "r5m4",
+        "name": "Pineapple Tarts (box)",
+        "description": "Twenty buttery tarts.",
+        "price": 22.0,
+        "category": "Cakes",
+        "isSoldOut": false,
+        "isSpicy": false
+      }
+    ]
+  }
+]
