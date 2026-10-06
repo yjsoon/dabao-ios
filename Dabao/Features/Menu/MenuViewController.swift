@@ -162,9 +162,12 @@ final class MenuHeaderView: UIView {
         subtitleLabel.textColor = .secondaryLabel
 
         closedLabel.text = "Closed now. You can browse, but not order."
-        closedLabel.font = .systemFont(ofSize: 13, weight: .semibold)
+        // Fix: Dynamic Type, and a darker red so white text passes the 4.5:1 contrast check.
+        closedLabel.font = .preferredFont(forTextStyle: .subheadline)
+        closedLabel.adjustsFontForContentSizeCategory = true
+        closedLabel.numberOfLines = 0
         closedLabel.textColor = .white
-        closedLabel.backgroundColor = .systemRed
+        closedLabel.backgroundColor = UIColor(red: 0.70, green: 0.07, blue: 0.07, alpha: 1)
         closedLabel.textAlignment = .center
         closedLabel.layer.cornerRadius = 8
         closedLabel.clipsToBounds = true
@@ -179,7 +182,7 @@ final class MenuHeaderView: UIView {
             stack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             stack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            closedLabel.heightAnchor.constraint(equalToConstant: 32)
+            closedLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 32)
         ])
     }
 

@@ -39,11 +39,16 @@ final class MenuItemCell: UITableViewCell {
         nameLabel.numberOfLines = 0
         detailLabel.textColor = .secondaryLabel
         detailLabel.numberOfLines = 2
-        priceLabel.font = .systemFont(ofSize: 14, weight: .medium)
-        quantityLabel.font = .systemFont(ofSize: 14, weight: .bold)
+        priceLabel.font = .preferredFont(forTextStyle: .subheadline)
+        quantityLabel.font = .preferredFont(forTextStyle: .headline)
+        [priceLabel, quantityLabel].forEach { $0.adjustsFontForContentSizeCategory = true }
+        // nameRow already says "In cart: 2", so VoiceOver doesn't need this label too.
+        quantityLabel.isAccessibilityElement = false
         quantityLabel.textColor = UIColor(named: "AccentColor")
         spicyIcon.tintColor = .systemRed
         spicyIcon.contentMode = .scaleAspectFit
+        // Fix: the icon grows with the text instead of staying at 14 points.
+        spicyIcon.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .headline)
 
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
         removeButton.setImage(UIImage(systemName: "minus.circle"), for: .normal)
@@ -81,8 +86,6 @@ final class MenuItemCell: UITableViewCell {
             buttons.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
             buttons.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
-            spicyIcon.widthAnchor.constraint(equalToConstant: 14),
-            spicyIcon.heightAnchor.constraint(equalToConstant: 14),
             // Fix: Apple recommends tap targets of at least 44 x 44 points.
             addButton.widthAnchor.constraint(equalToConstant: 44),
             addButton.heightAnchor.constraint(equalToConstant: 44),
@@ -100,8 +103,10 @@ final class MenuItemCell: UITableViewCell {
         quantityLabel.isHidden = row.quantityText == nil
         removeButton.isHidden = row.quantityText == nil
 
-        // Sold-out dishes are greyed out.
-        contentView.alpha = row.isSoldOut ? 0.4 : 1.0
+        // Fix: fading the whole cell to 40% made the text too faint to read.
+        // Sold-out dishes now use the system's secondary text colour, which passes contrast.
+        nameLabel.textColor = row.isSoldOut ? .secondaryLabel : .label
+        priceLabel.textColor = row.isSoldOut ? .secondaryLabel : .label
         addButton.isEnabled = !row.isSoldOut
 
         // Fix: the + and - buttons were icons with no names, and "sold out" and "spicy"
