@@ -33,6 +33,7 @@ final class MenuPresenterTests: XCTestCase {
     final class FakeRouter: MenuRouterProtocol {
         var didShowCart = false
         func showCart() { didShowCart = true }
+        func showInfo(for restaurant: Restaurant) {}
     }
 
     // MARK: Test data

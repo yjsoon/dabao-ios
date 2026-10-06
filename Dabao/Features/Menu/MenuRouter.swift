@@ -25,4 +25,9 @@ final class MenuRouter: MenuRouterProtocol {
         // The cart is the second tab, so we switch tabs rather than pushing a new screen.
         viewController?.tabBarController?.selectedIndex = 1
     }
+
+    func showInfo(for restaurant: Restaurant) {
+        let info = RestaurantInfoRouter.createModule(restaurant: restaurant)
+        viewController?.present(info, animated: true)
+    }
 }

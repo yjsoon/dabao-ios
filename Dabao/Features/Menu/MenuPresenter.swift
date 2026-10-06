@@ -10,6 +10,7 @@ final class MenuPresenter: MenuPresenterProtocol, MenuInteractorOutputProtocol {
     private let interactor: MenuInteractorInputProtocol
     private let router: MenuRouterProtocol
 
+    private var restaurant: Restaurant?
     private var items: [MenuItem] = []
     private var quantities: [String: Int] = [:]
 
@@ -38,9 +39,15 @@ final class MenuPresenter: MenuPresenterProtocol, MenuInteractorOutputProtocol {
         router.showCart()
     }
 
+    func didTapInfo() {
+        guard let restaurant else { return }
+        router.showInfo(for: restaurant)
+    }
+
     // MARK: MenuInteractorOutputProtocol (from the interactor)
 
     func didLoadMenu(restaurant: Restaurant, items: [MenuItem]) {
+        self.restaurant = restaurant
         self.items = items
         view?.showLoading(false)
         view?.showHeader(makeHeader(for: restaurant))

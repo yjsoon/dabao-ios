@@ -17,6 +17,10 @@ final class MenuViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemGroupedBackground
         navigationItem.largeTitleDisplayMode = .never
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "info.circle"),
+            primaryAction: UIAction { [weak self] _ in self?.presenter.didTapInfo() })
+        navigationItem.rightBarButtonItem?.accessibilityLabel = "Restaurant info"
 
         setUpTableView()
         setUpCartBar()
