@@ -69,6 +69,7 @@ struct CartSummary: Equatable {
 }
 
 enum AddToCartFailure: Equatable {
+    case restaurantClosed
     case soldOut
     case limitReached(Int)
 }

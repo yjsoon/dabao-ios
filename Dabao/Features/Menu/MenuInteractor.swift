@@ -32,6 +32,12 @@ final class MenuInteractor: MenuInteractorInputProtocol {
     func addItem(id: String) {
         guard let item = restaurant.menu.first(where: { $0.id == id }) else { return }
 
+        // Rule: you can't order from a closed restaurant.
+        if !restaurant.isOpen {
+            output?.didFailToAdd(item, reason: .restaurantClosed)
+            return
+        }
+
         // Rule: sold-out dishes can't be added.
         if item.isSoldOut {
             output?.didFailToAdd(item, reason: .soldOut)

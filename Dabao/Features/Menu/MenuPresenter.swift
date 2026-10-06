@@ -66,6 +66,8 @@ final class MenuPresenter: MenuPresenterProtocol, MenuInteractorOutputProtocol {
 
     func didFailToAdd(_ item: MenuItem, reason: AddToCartFailure) {
         switch reason {
+        case .restaurantClosed:
+            view?.showMessage(title: "Closed now", message: "This restaurant isn't taking orders right now. Please try again later!")
         case .soldOut:
             view?.showMessage(title: "Sold out", message: "Sorry, \(item.name) is sold out today.")
         case .limitReached(let limit):
