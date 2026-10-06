@@ -27,7 +27,6 @@ final class MenuRouter: MenuRouterProtocol {
     }
 
     func showInfo(for restaurant: Restaurant) {
-        let info = RestaurantInfoRouter.createModule(restaurant: restaurant)
-        viewController?.present(info, animated: true)
+        // TODO 1: Build the Restaurant Info module with its router, and present it.
     }
 }

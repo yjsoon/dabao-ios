@@ -107,7 +107,7 @@ final class MenuPresenter: MenuPresenterProtocol, MenuInteractorOutputProtocol {
     }
 
     func makeRow(for item: MenuItem) -> MenuItemViewModel {
-        let quantity = quantities[item.id] ?? 0
+        let quantity = quantities[item.name] ?? 0
         return MenuItemViewModel(
             id: item.id,
             name: item.name,
