@@ -29,7 +29,7 @@ final class CartStore {
     }
 
     var total: Decimal {
-        subtotal + deliveryFee
+        subtotal
     }
 
     func quantity(of item: MenuItem) -> Int {
@@ -71,9 +71,6 @@ final class CartStore {
 
     func removeLine(at index: Int) {
         lines.remove(at: index)
-        if lines.isEmpty {
-            restaurant = nil
-        }
         notifyChange()
     }
 
