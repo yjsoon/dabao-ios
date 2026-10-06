@@ -18,19 +18,34 @@ final class RestaurantInfoPresenterTests: XCTestCase {
         func close() { closed = true }
     }
 
-    private let facts = RestaurantFacts(name: "Kopi Corner", cuisine: "Coffee shop", rating: 4.8,
-                                        deliveryMinutes: 15, deliveryFee: 1.99, isOpen: false,
-                                        dishCount: 6, soldOutCount: 1, spicyCount: 1)
+    // These match Green Bowl and Ah Seng Chicken Rice in restaurants.json,
+    // so you can compare the test with what you see in the Simulator.
+    private let greenBowl = RestaurantFacts(name: "Green Bowl", cuisine: "Salads", rating: 4.1,
+                                            deliveryMinutes: 30, deliveryFee: 3.99, isOpen: false,
+                                            dishCount: 3, soldOutCount: 0, spicyCount: 0)
+    private let ahSeng = RestaurantFacts(name: "Ah Seng Chicken Rice", cuisine: "Hawker", rating: 4.6,
+                                         deliveryMinutes: 25, deliveryFee: 2.99, isOpen: true,
+                                         dishCount: 8, soldOutCount: 1, spicyCount: 1)
 
-    func test_facts_becomeReadableRows() {
+    func test_closedRestaurant_showsClosedAndDishCount() {
         let view = FakeView()
         let presenter = RestaurantInfoPresenter(view: view, interactor: FakeInteractor(), router: FakeRouter())
 
-        presenter.didLoadFacts(facts)
+        presenter.didLoadFacts(greenBowl)
 
-        XCTAssertEqual(view.title, "Kopi Corner")
+        XCTAssertEqual(view.title, "Green Bowl")
         XCTAssertTrue(view.rows.contains(InfoRowViewModel(title: "Status", value: "Closed")))
-        XCTAssertTrue(view.rows.contains(InfoRowViewModel(title: "Menu", value: "6 dishes (1 sold out today)")))
+        XCTAssertTrue(view.rows.contains(InfoRowViewModel(title: "Menu", value: "3 dishes")))
+    }
+
+    func test_openRestaurant_showsSoldOutCount() {
+        let view = FakeView()
+        let presenter = RestaurantInfoPresenter(view: view, interactor: FakeInteractor(), router: FakeRouter())
+
+        presenter.didLoadFacts(ahSeng)
+
+        XCTAssertTrue(view.rows.contains(InfoRowViewModel(title: "Status", value: "Open now")))
+        XCTAssertTrue(view.rows.contains(InfoRowViewModel(title: "Menu", value: "8 dishes (1 sold out today)")))
     }
 
     func test_done_closesSheet() {
