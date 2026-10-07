@@ -56,7 +56,8 @@ final class MenuViewController: UIViewController {
             cartBar.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
             cartBar.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
             cartBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12),
-            cartBar.heightAnchor.constraint(equalToConstant: 50)
+            // Fix: let the cart bar grow with the text instead of clipping it.
+            cartBar.heightAnchor.constraint(greaterThanOrEqualToConstant: 50)
         ])
     }
 
@@ -68,6 +69,12 @@ final class MenuViewController: UIViewController {
             spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // Leave room under the list for the cart bar, however tall it is.
+        tableView.contentInset.bottom = cartBar.isHidden ? 0 : cartBar.bounds.height + 24
     }
 
     private func indexPath(forItemID id: String) -> IndexPath? {
@@ -91,8 +98,11 @@ extension MenuViewController: MenuViewProtocol {
     func showHeader(_ header: MenuHeaderViewModel) {
         title = header.title
         headerView.configure(with: header)
+        // Fix: fix the width and let the height grow, so the Closed banner can wrap.
         headerView.frame.size = headerView.systemLayoutSizeFitting(
-            CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height))
+            CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel)
         tableView.tableHeaderView = headerView
     }
 
@@ -112,7 +122,7 @@ extension MenuViewController: MenuViewProtocol {
     func showCartBar(title: String?) {
         cartBar.isHidden = (title == nil)
         cartBar.configuration?.title = title
-        tableView.contentInset.bottom = title == nil ? 0 : 74
+        view.setNeedsLayout()
     }
 
     func showMessage(title: String, message: String) {

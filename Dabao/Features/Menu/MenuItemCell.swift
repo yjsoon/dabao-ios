@@ -15,6 +15,7 @@ final class MenuItemCell: UITableViewCell {
     private let addButton = UIButton(type: .system)
     private let removeButton = UIButton(type: .system)
     private let nameRow = UIStackView()
+    private let mainStack = UIStackView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -72,19 +73,27 @@ final class MenuItemCell: UITableViewCell {
         buttons.spacing = 6
         buttons.alignment = .center
 
-        [textStack, buttons].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            contentView.addSubview($0)
+        buttons.setContentHuggingPriority(.required, for: .horizontal)
+        buttons.setContentCompressionResistancePriority(.required, for: .horizontal)
+        quantityLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+        // Fix: at the largest text sizes there isn't room for the text and the buttons
+        // side by side, so we put the buttons underneath the text instead.
+        mainStack.addArrangedSubview(textStack)
+        mainStack.addArrangedSubview(buttons)
+        mainStack.spacing = 8
+        mainStack.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(mainStack)
+        updateLayoutForTextSize()
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (cell: MenuItemCell, _: UITraitCollection) in
+            cell.updateLayoutForTextSize()
         }
 
         NSLayoutConstraint.activate([
-            textStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
-            textStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            textStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
-            textStack.trailingAnchor.constraint(lessThanOrEqualTo: buttons.leadingAnchor, constant: -8),
-
-            buttons.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            buttons.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            mainStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            mainStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            mainStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            mainStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
 
             // Fix: Apple recommends tap targets of at least 44 x 44 points.
             addButton.widthAnchor.constraint(equalToConstant: 44),
@@ -92,6 +101,12 @@ final class MenuItemCell: UITableViewCell {
             removeButton.widthAnchor.constraint(equalToConstant: 44),
             removeButton.heightAnchor.constraint(equalToConstant: 44)
         ])
+    }
+
+    private func updateLayoutForTextSize() {
+        let isAccessibilitySize = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        mainStack.axis = isAccessibilitySize ? .vertical : .horizontal
+        mainStack.alignment = isAccessibilitySize ? .leading : .center
     }
 
     func configure(with row: MenuItemViewModel) {

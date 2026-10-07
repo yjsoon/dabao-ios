@@ -17,6 +17,12 @@ final class CartViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // Leave room under the list for the Place order button, however tall it is.
+        tableView.contentInset.bottom = checkoutButton.isHidden ? 0 : checkoutButton.bounds.height + 24
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Cart"
@@ -74,9 +80,9 @@ final class CartViewController: UIViewController {
             checkoutButton.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
             checkoutButton.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
             checkoutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12),
-            checkoutButton.heightAnchor.constraint(equalToConstant: 50)
+            // Fix: let the button grow with the text instead of clipping it.
+            checkoutButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 50)
         ])
-        tableView.contentInset.bottom = 74
     }
 
     @objc private func refresh() {
