@@ -9,6 +9,7 @@ final class MenuPresenterTests: XCTestCase {
 
     // MARK: Fakes
 
+    // MARK: Exercise 5 - we need to use fake view, interactor and router to test the Menu Presenter
     final class FakeView: MenuViewProtocol {
         var shownSections: [MenuSectionViewModel] = []
         var reloadedRows: [MenuItemViewModel] = []
@@ -103,6 +104,22 @@ final class MenuPresenterTests: XCTestCase {
         XCTAssertEqual(view.reloadedRows.last?.quantityText, "×2")
     }
 
-    // TODO (Day 14): write a test that checks the "sold out" message appears
-    // when the interactor reports `.soldOut`.
+    // MARK: TODO (Day 14) - the "sold out" message appears when the interactor reports `.soldOut`. (DONE)
+    func test_soldOutFailure_showsSoldOutMessage() {
+        let view = FakeView()
+        let presenter = MenuPresenter(view: view, interactor: FakeInteractor(), router: FakeRouter())
+
+        presenter.didFailToAdd(rice, reason: .soldOut)
+
+        XCTAssertEqual(view.messages, ["Sold out"])
+    }
+    
+    func test_closedRestaurant_showsClosedMessage() {
+        let view = FakeView()
+        let presenter = MenuPresenter(view: view, interactor: FakeInteractor(), router: FakeRouter())
+
+        presenter.didFailToAdd(rice, reason: .restaurantClosed)
+
+        XCTAssertEqual(view.messages, ["Closed now"])
+    }
 }
