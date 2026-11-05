@@ -12,14 +12,26 @@ final class MenuPresenterTests: XCTestCase {
     final class FakeView: MenuViewProtocol {
         var shownSections: [MenuSectionViewModel] = []
         var reloadedRows: [MenuItemViewModel] = []
-        var cartBarTitle: String??
+        /// What the presenter last told us about the cart bar.
+        enum CartBar: Equatable {
+            case notTold
+            case hidden
+            case shown(String)
+        }
+        var cartBar: CartBar = .notTold
         var messages: [String] = []
 
         func showLoading(_ isLoading: Bool) {}
         func showHeader(_ header: MenuHeaderViewModel) {}
         func showSections(_ sections: [MenuSectionViewModel]) { shownSections = sections }
         func reloadRow(_ row: MenuItemViewModel) { reloadedRows.append(row) }
-        func showCartBar(title: String?) { cartBarTitle = .some(title) }
+        func showCartBar(title: String?) {
+            if let title {
+                cartBar = .shown(title)
+            } else {
+                cartBar = .hidden
+            }
+        }
         func showMessage(title: String, message: String) { messages.append(title) }
     }
 
@@ -37,15 +49,15 @@ final class MenuPresenterTests: XCTestCase {
 
     // MARK: Test data
 
-    private let rice = MenuItem(id: "a", name: "Chicken Rice", description: "", price: 4.5,
-                                category: "Mains", isSoldOut: false, isSpicy: false)
-    private let tea = MenuItem(id: "b", name: "Teh Peng", description: "", price: 2,
-                               category: "Drinks", isSoldOut: false, isSpicy: false)
+    private static let rice = MenuItem(id: "a", name: "Chicken Rice", description: "", price: 4.5,
+                                       category: "Mains", isSoldOut: false, isSpicy: false)
+    private static let tea = MenuItem(id: "b", name: "Teh Peng", description: "", price: 2,
+                                      category: "Drinks", isSoldOut: false, isSpicy: false)
 
     private func makeRestaurant() -> Restaurant {
         Restaurant(id: "r", name: "Test Kitchen", cuisine: "Hawker", rating: 4.5,
                    deliveryMinutes: 20, deliveryFee: 2, isOpen: true,
-                   imageName: "fork.knife", menu: [rice, tea])
+                   imageName: "fork.knife", menu: [Self.rice, Self.tea])
     }
 
     // MARK: Tests
@@ -73,7 +85,7 @@ final class MenuPresenterTests: XCTestCase {
         let view = FakeView()
         let presenter = MenuPresenter(view: view, interactor: FakeInteractor(), router: FakeRouter())
 
-        presenter.didLoadMenu(restaurant: makeRestaurant(), items: [rice, tea])
+        presenter.didLoadMenu(restaurant: makeRestaurant(), items: [Self.rice, Self.tea])
 
         XCTAssertEqual(view.shownSections.map(\.title), ["Mains", "Drinks"])
         XCTAssertEqual(view.shownSections.first?.rows.first?.priceText, "$4.50")
@@ -82,11 +94,11 @@ final class MenuPresenterTests: XCTestCase {
     func test_cartUpdate_showsCartBarWithCountAndTotal() {
         let view = FakeView()
         let presenter = MenuPresenter(view: view, interactor: FakeInteractor(), router: FakeRouter())
-        presenter.didLoadMenu(restaurant: makeRestaurant(), items: [rice, tea])
+        presenter.didLoadMenu(restaurant: makeRestaurant(), items: [Self.rice, Self.tea])
 
         presenter.didUpdateCart(CartSummary(quantities: ["a": 2], itemCount: 2, total: 9))
 
-        XCTAssertEqual(view.cartBarTitle, .some("View cart · 2 items · $9.00"))
+        XCTAssertEqual(view.cartBar, .shown("View cart · 2 items · $9.00"))
         XCTAssertEqual(view.reloadedRows.last?.quantityText, "×2")
     }
 
